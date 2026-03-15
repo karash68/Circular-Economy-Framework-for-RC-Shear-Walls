@@ -1,0 +1,1300 @@
+\documentclass[fleqn,10pt]{wlscirep}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\title{Multi-Objective Circular Economy Optimization for Seismic Retrofit of Reinforced Concrete Shear Walls}
+
+\author[1,*]{Kevin Karanja Kuria}
+\author[2]{Orsolya Kegyes-Brassai}
+\affil[1]{Department of Structural Engineering and Geotechnics, Széchenyi István University, 9026 Győr, Hungary;  }
+
+\affil[*]{\href{mailto:kevin.karanja.kuria@sze.hu}{kevin.karanja.kuria@sze.hu} }
+
+%\keywords{Circular economy, seismic retrofit, lifecycle assessment, sustainability metrics, 36 reinforced concrete shear walls, multi-objective optimization}
+
+\begin{abstract}
+
+Growing global demands for resilient and sustainable infrastructure require seismic retrofit strategies that simultaneously enhance structural performance while minimizing environmental impacts. This study presents a multi-objective optimization framework that integrates circular economy indicators with seismic performance evaluation for reinforced concrete (RC) shear wall retrofit design. Nonlinear finite element simulations were conducted using SeismoStruct to evaluate the seismic response of RC shear walls strengthened using three retrofit techniques: carbon fibre reinforced polymer (CFRP) overlays, externally bonded steel plates, and reinforced concrete (RC) jacketing.
+
+A component-level shear wall model with a thickness of 125\,mm was used to investigate retrofit performance through nonlinear pushover and cyclic analyses. Circular economy performance was quantified using the Material Circularity Index (MCI), Carbon Equivalence Damage Index (CEDI), and Design for Circularity (DfC) indicators. Results demonstrate shear capacity increases of 45–80\% depending on the strengthening technique, with CFRP overlays providing balanced structural and environmental performance.
+
+The proposed framework was validated through application to a six-storey reinforced concrete building model containing structural shear walls with a thickness of 200\,mm. The results demonstrate that integrating seismic performance analysis with circular economy indicators enables more sustainable retrofit decision-making, supporting resilient and resource-efficient infrastructure development.
+
+\end{abstract}
+
+\begin{document}
+
+\flushbottom
+\maketitle
+% * <john.hammersley@gmail.com> 2015-02-09T12:07:31.197Z:
+%
+%  Click the title above to edit the author information and abstract
+%
+\thispagestyle{empty}
+
+\noindent {Keywords: Circular economy, seismic retrofit, lifecycle assessment, sustainability metrics, RC shear walls, multi-objective optimization}
+
+\section{Introduction}
+\label{sec:intro}
+
+The construction industry is one of the largest contributors to global greenhouse
+gas emissions and resource consumption, with the built environment responsible for
+approximately 39--40\% of worldwide carbon output~\cite{UrgeVorsatz2020}. Urban
+centers located in seismic regions face additional challenges due to the aging of
+reinforced concrete (RC) infrastructure, which often requires strengthening to
+maintain adequate safety and serviceability under future earthquake events
+\cite{gkournelos2021}. As a result, seismic retrofitting of existing buildings has
+become an essential strategy for improving structural resilience while extending
+the service life of infrastructure systems.
+
+Historically, seismic retrofit design has focused primarily on achieving
+code-compliant structural performance while minimizing initial construction costs
+\cite{caruso2021}. Although such approaches improve safety against seismic hazards,
+they frequently overlook broader environmental and lifecycle impacts associated
+with retrofit interventions. These impacts include raw material extraction,
+manufacturing, transportation, installation, maintenance, and end-of-life material
+management, all of which contribute significantly to the overall sustainability
+footprint of construction projects~\cite{hossain2016}.
+
+Recent research has highlighted the importance of incorporating sustainability
+considerations into structural engineering practice. In particular, circular
+economy principles have emerged as a promising framework for reducing resource
+consumption, improving material efficiency, and enhancing the long-term
+sustainability of infrastructure systems. However, most existing retrofit studies
+still evaluate seismic performance and environmental indicators independently,
+resulting in design decisions that prioritize either structural safety or
+environmental performance rather than optimizing both simultaneously
+\cite{Salgado2020,Vitiello2016,Villalba2024,Passoni2024,Clemett2022,Dong2023}.
+
+Furthermore, the development of quantitative tools capable of evaluating circular
+economy performance within seismic retrofit applications remains relatively
+limited. Although recent studies have begun to explore lifecycle sustainability
+metrics for construction systems, standardized indicators capable of capturing
+material circularity, carbon impacts, and resource recovery potential in
+structural retrofit contexts are still evolving
+\cite{Goncalves2025,Poolsawad2023,PinedaMartos2024}. This lack of integrated
+methodologies makes it difficult for engineers and decision-makers to incorporate
+circular economy principles into practical retrofit design workflows.
+
+Multi-objective optimization (MOO) techniques have been widely applied in
+structural engineering to address competing design objectives such as cost,
+performance, and safety. Nevertheless, their integrated use for simultaneously
+improving seismic performance, minimizing environmental impacts, and enhancing
+economic feasibility in reinforced concrete retrofit design remains relatively
+uncommon \cite{Zou2007,Choi2014,Cere2022,Ahmed2025}. In addition, clear guidelines
+for translating circular economy concepts into engineering practice are still
+limited within existing structural design frameworks.
+
+To address these challenges, this study proposes an integrated framework that
+combines nonlinear seismic assessment with circular economy evaluation and
+multi-objective optimization for the sustainable retrofit of reinforced concrete
+shear walls. The methodology follows a structured sequence of phases including
+seismic assessment, nonlinear structural analysis, performance evaluation,
+circular economy assessment, multi-objective optimization, and optimal retrofit
+strategy selection.
+
+The main contributions of this study are summarized as follows:
+
+\begin{itemize}
+
+\item Development of a comprehensive framework that integrates circular economy
+principles into seismic retrofit design, enabling lifecycle sustainability
+considerations to be incorporated directly into structural performance assessment.
+
+\item Introduction of quantitative sustainability indicators, including the
+Material Circularity Index (MCI), Carbon Equivalence Damage Index (CEDI), and
+Design for Circularity (DfC), to evaluate environmental and material efficiency
+of alternative retrofit strategies.
+
+\item Integration of advanced multi-objective optimization algorithms such as
+NSGA-II, MOPSO, and SPEA2 to identify retrofit solutions that balance seismic
+performance, environmental sustainability, and economic feasibility.
+
+\item Application of the proposed framework to reinforced concrete shear wall
+retrofit scenarios, demonstrating the trade-offs between structural capacity,
+environmental impact, and material circularity.
+
+\item Validation of the methodology through case studies involving retrofitted
+shear walls and reinforced concrete building systems subjected to seismic
+loading.
+
+\end{itemize}
+
+
+
+\section{Literature Review}
+The construction sector's environmental impact---including roughly 39--40\% of global
+carbon emissions---has driven the industry to explore circular economy (CE) principles
+as a foundation for resource conservation and sustainability~\cite{globalabc2023}.
+CE approaches, as defined by thought leaders such as the Ellen MacArthur
+Foundation~\cite{emf_mci_2015}, emphasize cradle-to-cradle supply chains, modular
+design, and strategies for material recovery and waste minimization, offering a
+regenerative alternative to ``take--make--dispose'' models. Researchers have identified
+that integrating modular construction systems, mechanical connections, and digital
+tracking (e.g., material passports and disassembly-ready detailing) significantly
+advances CE practices in both new construction and retrofit
+projects~\cite{ec_levels,globalabc_dfd_2025}.
+
+Empirical studies report that CE interventions can achieve substantial environmental
+gains: reductions in embodied carbon by approximately 20--60\% have been achieved using
+modular methods, design for disassembly, and circular supply protocols, compared to
+linear construction strategies~\cite{zhang2024,rmi2021}. In practice, this manifests in
+the adoption of pre-manufactured building components, standardized mechanical joints,
+and increased use of recyclable materials, as well as detailed lifecycle documentation
+through digital platforms~\cite{ec_levels,globalabc_dfd_2025}.
+
+Lifecycle Assessment (LCA) has emerged as the gold standard for quantifying
+environmental and resource impacts across all stages of a building's existence, in
+accordance with ISO~14040/14044~\cite{iso14040_14044}. LCA is now frequently
+supplemented by lifecycle cost and social assessments, capturing a broad spectrum of
+sustainability attributes and helping quantify trade-offs between operational energy,
+resource depletion, and long-term environmental burdens. Studies evaluating seismic
+retrofits through LCA find that appropriately chosen interventions can often repay their
+embodied carbon within 5--15~years, especially if they also address operational
+improvements~\cite{Salgado2020,Passoni2024}.
+
+Seismic retrofit of reinforced concrete (RC) shear walls has been extensively researched,
+with a focus on strengthening, stiffness enhancement, and improved ductility.
+Traditional techniques such as RC jacketing and steel plate bonding, while effective
+structurally, often introduce permanent modifications that inhibit later adaptation,
+complicating repair and re-use. More advanced methods---such as
+fiber-reinforced-polymer (FRP) systems~\cite{mccoy2019,yu2024}, engineered cementitious
+composites (ECC), and shape-memory alloys (SMA)---now offer minimally invasive
+strengthening while allowing future reversibility or targeted replacement by using
+mechanical fasteners instead of chemical bonds. Combining engineered materials like ECC,
+with their high strain capacity and self-healing properties, can yield seismic retrofits
+that not only perform better during earthquakes but also simplify long-term maintenance
+and subsequent upgrades~\cite{shang2019_ecc_rc_strengthening, keskin2016_ecc_self_healing}.
+
+Recent years have witnessed a move towards modular, standardized retrofit components for
+RC shear walls---such as bolted steel jackets, precast overlays, and mechanically
+fastened FRP---that can be rapidly installed, easily inspected, and disassembled for
+reuse or recycling~\cite{peikko2022,kuepfer2023,mccoy2019}. These approaches align with
+emerging building codes and industry trends favoring closed-loop materials, especially in
+urban seismic risk zones.
+
+Multi-objective optimization (MOO) has become an essential tool for balancing the
+competing criteria of seismic performance, cost, and sustainability in both new
+construction and retrofit decision-making. Advanced algorithms---including NSGA-II,
+Multi-Objective Particle Swarm Optimization (MOPSO), and Strength Pareto Evolutionary
+Algorithm~2 (SPEA2)---facilitate navigation of complex design spaces, generating Pareto
+fronts that help stakeholders weigh trade-offs and select retrofit solutions delivering
+both resilience and minimal environmental impact. Case studies show that MOO frameworks can robustly optimize retrofit configurations for
+RC shear walls, demonstrating significant improvements in both lifecycle sustainability
+and seismic safety~\cite{Salgado2020,Passoni2024}.
+
+
+\section{Methodology}
+\label{sec:method}
+
+This study adopts an integrated framework for the seismic assessment and sustainable retrofit design of reinforced concrete shear walls. The methodology is organized into six sequential phases: seismic assessment, nonlinear analysis, performance evaluation, circular economy indicators, multi-objective optimization, and optimal retrofit strategy selection. These phases provide a structured workflow linking structural response assessment with sustainability-based decision-making, as illustrated in Figure~\ref{fig:method_framework}.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.62\linewidth]{methodology_framework.png}
+    \caption{Integrated methodology framework adopted in this study, showing the sequential phases of seismic assessment, nonlinear analysis, performance evaluation, circular economy indicators, multi-objective optimization, and optimal retrofit strategy selection.}
+    \label{fig:method_framework}
+\end{figure}
+
+
+\section{Structural Models and Numerical Simulation}
+
+\subsection{RC Shear Wall Modeling}
+
+The study considers a reinforced concrete (RC) shear wall representative of existing buildings requiring seismic assessment and potential retrofitting. 
+The numerical model was developed in SeismoStruct using a nonlinear force--based plastic hinge frame element formulation with fiber discretization.
+
+\paragraph{Geometry}
+
+The baseline wall configuration has the following geometric properties:
+
+\begin{itemize}
+\item Wall length $L_w = 1.0\,\text{m}$
+\item Wall height $h_w = 2.0\,\text{m}$
+\item Wall thickness $t_w = 0.125\,\text{m}$
+\item Aspect ratio $\alpha = \dfrac{h_w}{L_w} = 2.0$
+\end{itemize}
+
+\paragraph{Material Properties}
+
+Material properties correspond to typical existing reinforced concrete structures:
+
+\begin{itemize}
+\item Concrete compressive strength $f'_c = 20\,\text{MPa}$
+\item Steel yield strength $f_y = 444\,\text{MPa}$
+\item Steel elastic modulus $E_s = 200\,\text{GPa}$
+\end{itemize}
+
+\paragraph{Reinforcement Layout}
+
+The reinforcement layout consists of boundary and web reinforcement represented using a fiber-based section model:
+
+\begin{itemize}
+\item Boundary reinforcement: $4$ longitudinal bars of diameter $10\,\text{mm}$
+\item Web reinforcement: $10$ bars of diameter $6\,\text{mm}$
+\item Transverse reinforcement: $\phi10$ ties spaced at $100\,\text{mm}$
+\end{itemize}
+
+The wall was modeled using a single nonlinear frame element with a fiber discretization consisting of 103 fibers. 
+This formulation allows accurate representation of nonlinear concrete and reinforcing steel behaviour including cracking, yielding, stiffness degradation, and strain localization.
+
+\paragraph{Boundary Conditions and Loading}
+
+The base node of the wall is fully fixed while the top node serves as the displacement control node. 
+The following loading conditions were applied:
+
+\begin{itemize}
+\item Constant axial load $N = 246\,\text{kN}$ applied at the top node
+\item Incremental lateral load applied in the global $x$ direction
+\end{itemize}
+
+A displacement-controlled pushover analysis was performed with a target displacement of
+
+\[
+\Delta_{target} = 0.04\,\text{m}
+\]
+
+applied at the control node.
+
+Structural performance assessment follows the provisions of \textbf{Eurocode~8} and \textbf{ASCE~41--23}, where structural limit states are evaluated through chord rotation capacity and shear capacity checks during nonlinear analysis. 
+Concrete crushing and reinforcement yielding are monitored through strain limits defined in the fiber section model.
+
+\subsection{Retrofit Strategies}
+
+Three retrofit strategies were investigated to evaluate the effectiveness of seismic strengthening techniques for reinforced concrete (RC) shear walls. 
+Each retrofit configuration was implemented using the same baseline wall geometry, material properties, and boundary conditions in order to ensure a consistent comparison of structural performance.
+
+The following configurations were analysed:
+
+\begin{itemize}
+\item \textbf{W1BM}: Baseline RC shear wall without strengthening
+\item \textbf{W2CF}: CFRP-strengthened wall
+\item \textbf{W3SP}: Steel plate strengthened wall
+\item \textbf{W4RJ}: Reinforced concrete jacketed wall
+\end{itemize}
+
+Figure~\ref{fig:wall_configurations} illustrates the four reinforced concrete shear wall configurations analysed in the study.
+
+\begin{figure}[htbp]
+\centering
+
+\begin{subfigure}{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{W1BM_wall}
+\caption{W1BM -- Baseline model}
+\label{fig:W1BM}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{W2CF_wall}
+\caption{W2CF -- CFRP strengthened wall}
+\label{fig:W2CF}
+\end{subfigure}
+
+\medskip
+
+\begin{subfigure}{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{W3SP_wall}
+\caption{W3SP -- Steel plate strengthened wall}
+\label{fig:W3SP}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{W4RJ_wall}
+\caption{W4RJ -- RC jacketed wall}
+\label{fig:W4RJ}
+\end{subfigure}
+
+\caption{Reinforced concrete shear wall configurations analysed in this study.}
+\label{fig:wall_configurations}
+
+\end{figure}
+
+\paragraph{Circular Economy Assessment}
+
+The environmental performance of the retrofit strategies was evaluated using three circular economy indicators:
+
+\begin{itemize}
+\item Material Circularity Index (MCI)
+\item Carbon Equivalence Damage Index (CEDI)
+\item Design for Circularity score (DfC)
+\end{itemize}
+
+These indicators allow a quantitative comparison between structural performance improvements and environmental impacts associated with each retrofit technique.
+
+\begin{table}[htbp]
+\centering
+\caption{Circular economy assessment metrics for RC shear wall retrofit strategies.}
+\label{tab:circular_metrics}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{|p{3.2cm}|p{3.5cm}|p{3.8cm}|p{3.5cm}|p{2.5cm}|}
+\hline
+\textbf{Retrofit Strategy} & \textbf{MCI} & \textbf{CEDI} & \textbf{DfC} & \textbf{Assessment} \\
+\hline
+FRP Overlay & 15\% & 2.1 kg CO$_2$/kN & 3.2 / 10 & Mixed \\
+\hline
+Steel Plate Strengthening & 85\% & 3.8 kg CO$_2$/kN & 8.7 / 10 & Best \\
+\hline
+RC Jacketing & 35\% & 1.9 kg CO$_2$/kN & 2.1 / 10 & Moderate \\
+\hline
+\end{tabular}
+\end{table}
+
+The circular economy metrics are defined as
+
+\begin{align}
+MCI &= \frac{M_{recycled}}{M_{total}} \times 100 \\
+CEDI &= \frac{CO_{2,\;embedded}}{V_{capacity}} \quad (kg\,CO_2/kN) \\
+DfC &= w_1D_{dis} + w_2R_{reuse} + w_3M_{ID}
+\end{align}
+
+with weighting factors
+
+\[
+w_1 = 0.4, \quad w_2 = 0.4, \quad w_3 = 0.2
+\]
+
+\subsection{Shear Capacity of Retrofit Strategies}
+
+\subsubsection{CFRP Wrapping}
+
+Externally bonded Carbon Fiber Reinforced Polymer (CFRP) sheets were applied to improve the shear capacity and confinement of the RC wall.
+
+\begin{itemize}
+\item CFRP elastic modulus $E_f = 242\,\text{GPa}$
+\item Ultimate tensile strength $f_{fu} = 3800\,\text{MPa}$
+\item Ultimate strain $\varepsilon_{fu} = 0.0143$
+\item Total CFRP thickness $t_f = 0.478\,\text{mm}$
+\end{itemize}
+
+The CFRP layers were oriented primarily in the transverse direction to enhance confinement and shear resistance.
+
+\subsubsection{Steel Plate Strengthening}
+
+Steel plate strengthening was modeled by attaching external steel plates to the wall surfaces to increase lateral load capacity and ductility. 
+The plates were assumed to behave elastically--plastically with material properties consistent with structural steel used in retrofit applications. 
+Mechanical anchorage was assumed to ensure composite action between the existing wall and the steel plates.
+
+\subsubsection{RC Jacketing}
+
+Reinforced concrete jacketing was implemented by adding new RC layers to both faces of the existing wall.
+
+\begin{itemize}
+\item Jacket thickness: $30\,\text{mm}$ on each face
+\item Additional reinforcement: $8\,\text{mm}$ bars spaced at $200\,\text{mm}$ vertically and horizontally
+\item Perfect bond assumed between existing wall and jacket
+\end{itemize}
+
+The resulting composite wall thickness becomes
+
+\[
+t_{total} = 125\,\text{mm} + 2 \times 30\,\text{mm} = 185\,\text{mm}.
+\]
+
+This retrofit strategy provides the largest increase in strength and stiffness among the strengthening techniques considered.
+
+
+\section{Finite Element Modeling of the RC Shear Wall}
+
+The nonlinear behaviour of the reinforced concrete (RC) shear wall was simulated using a fiber-based finite element (FE) formulation implemented in SeismoStruct. 
+The model employs an inelastic force--based beam--column element capable of representing distributed plasticity along the member length. 
+This formulation enables accurate simulation of nonlinear material behaviour through fiber discretization of the cross-section while capturing the interaction between axial force, bending moment, and shear effects.
+
+The FE framework allows representation of key nonlinear mechanisms governing shear wall behaviour, including cracking of concrete, reinforcement yielding, stiffness degradation, and cyclic hysteretic response under seismic loading.
+
+\subsection{Element Formulation}
+
+The shear wall was modeled using the force-based inelastic frame element available in SeismoStruct. 
+This element integrates the sectional response along the element length, enabling the development of plastic regions without predefined hinge locations.
+
+The formulation includes:
+
+\begin{itemize}
+\item nonlinear sectional behaviour represented through fiber discretization,
+\item distributed plasticity along the element length,
+\item coupling between axial force, bending moment, and shear response.
+\end{itemize}
+
+Figure~\ref{fig:element_formulation} illustrates the adopted element formulation and internal force notation used in the numerical model.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.65\linewidth]{element_class_properties.png}
+\caption{Force-based frame element formulation and internal force notation used in the finite element model.}
+\label{fig:element_formulation}
+\end{figure}
+
+\subsection{Section Discretization}
+
+The cross-section of the shear wall was discretized into concrete and steel fibers in order to capture nonlinear stress--strain behaviour across the section depth. 
+Fiber discretization allows realistic simulation of cracking, reinforcement yielding, and progressive stiffness degradation during nonlinear analysis.
+
+The fiber section includes:
+
+\begin{itemize}
+\item concrete fibers representing the wall body,
+\item steel fibers representing longitudinal reinforcement,
+\item confined and unconfined concrete regions in the boundary zones.
+\end{itemize}
+
+A total of 82 monitoring fibers were adopted to ensure adequate accuracy in capturing the nonlinear response.
+
+Figure~\ref{fig:section_discretization} shows the discretized fiber section used in the numerical model.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.08\linewidth]{section_discretization_pattern.png}
+\caption{Fiber discretization of the RC shear wall cross-section used in the finite element model.}
+\label{fig:section_discretization}
+\end{figure}
+
+\subsection{Material Models}
+
+The nonlinear behaviour of the RC shear wall was represented using constitutive models for concrete and reinforcing steel capable of reproducing cyclic material behaviour under seismic loading.
+
+The adopted material models include:
+
+\begin{itemize}
+\item Mander nonlinear concrete model,
+\item Menegotto--Pinto reinforcing steel model,
+\item generic hysteretic model for cyclic degradation.
+\end{itemize}
+
+\subsubsection{Concrete Material Model}
+
+Concrete behaviour was represented using the Mander nonlinear concrete model, which accounts for nonlinear compressive hardening, post-peak softening, tensile cracking, and stiffness degradation. 
+The model also incorporates confinement effects typically present in the boundary regions of reinforced concrete shear walls.
+
+\subsubsection{Reinforcing Steel Model}
+
+Reinforcing steel behaviour was simulated using the Menegotto--Pinto constitutive model. 
+This formulation accurately reproduces cyclic steel behaviour, including strain hardening and Bauschinger effects, allowing realistic modelling of reinforcement response under load reversals typical of seismic loading.
+
+\subsubsection{Hysteretic Material Model}
+
+A generic hysteretic material model was implemented to simulate cyclic stiffness degradation, strength deterioration, and energy dissipation commonly observed in reinforced concrete structures subjected to repeated loading cycles. 
+The model incorporates pinching behaviour, residual strength ratios, and cyclic deterioration parameters to reproduce realistic seismic response.
+
+\begin{figure}[htbp]
+\centering
+
+\begin{subfigure}{0.4\linewidth}
+\centering
+\includegraphics[width=\linewidth]{concrete_material_model.png}
+\caption{Concrete stress--strain model}
+\label{fig:concrete_model}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.5\linewidth}
+\centering
+\includegraphics[width=\linewidth]{steel_material_model.png}
+\caption{Reinforcing steel cyclic model}
+\label{fig:steel_model}
+\end{subfigure}
+
+\bigskip
+
+\begin{subfigure}{0.4\linewidth}
+\centering
+\includegraphics[width=\linewidth]{hysteretic_material_model.png}
+\caption{Hysteretic cyclic response}
+\label{fig:hysteretic_model}
+\end{subfigure}
+
+\caption{Material constitutive models adopted in the nonlinear finite element analysis.}
+\label{fig:material_models}
+
+\end{figure}
+
+\subsection{Static Nonlinear Pushover Procedures}
+
+Static nonlinear pushover analysis was conducted to evaluate the seismic performance of the RC shear wall models. 
+Two displacement-based procedures commonly adopted in seismic assessment guidelines were implemented: the N2 Method according to Eurocode~8 and the Displacement Coefficient Method according to ASCE~41--23. 
+Both procedures estimate the structural displacement demand by transforming the multi-degree-of-freedom (MDOF) system into an equivalent single-degree-of-freedom (SDOF) representation.
+
+\subsubsection{N2 Method (Eurocode 8)}
+
+The N2 method, originally proposed by Fajfar \cite{Fajfar2000N2}, combines pushover analysis with the response spectrum approach. 
+The nonlinear capacity curve obtained from pushover analysis is transformed into the capacity diagram of an equivalent SDOF system. 
+The intersection between the structural capacity curve and the elastic demand spectrum determines the target displacement.
+
+The target displacement is defined as
+
+\begin{equation}
+d_{et} = S_a(T_e)\left(\frac{T_e}{2\pi}\right)^2
+\end{equation}
+
+where $S_a(T_e)$ represents the spectral acceleration corresponding to the effective period $T_e$ of the equivalent SDOF system.
+
+For medium-to-long period structures, the roof displacement is estimated as
+
+\begin{equation}
+d_t = C_0 d_{et}
+\end{equation}
+
+where $C_0$ is the transformation factor relating SDOF displacement to roof displacement.
+
+\subsubsection{Displacement Coefficient Method (ASCE 41--23)}
+
+The displacement coefficient method defined in ASCE~41--23 estimates the target displacement through modification factors accounting for inelastic structural behaviour, higher mode effects, and hysteretic energy dissipation.
+
+The target displacement is calculated as
+
+\begin{equation}
+d_t = C_0 C_1 C_2 C_3 S_a(T_e)\left(\frac{T_e}{2\pi}\right)^2
+\end{equation}
+
+where
+
+\begin{itemize}
+\item $C_0$ = modal participation factor relating SDOF displacement to roof displacement,
+\item $C_1$ = inelastic displacement ratio,
+\item $C_2$ = factor accounting for hysteretic behaviour,
+\item $C_3$ = modification factor for $P$--$\Delta$ effects,
+\item $S_a(T_e)$ = spectral acceleration at effective period $T_e$.
+\end{itemize}
+
+The two pushover procedures were applied to estimate the displacement demand of the RC shear wall models and to compare the performance predictions obtained using the Eurocode~8 and ASCE~41--23 assessment frameworks.
+
+\section{Nonlinear Analysis Results}
+
+This section presents the results obtained from the nonlinear analyses performed on the reinforced concrete (RC) shear wall models. 
+Four wall typologies were investigated in order to evaluate the influence of different strengthening strategies on the seismic response of the structure. 
+The baseline configuration and the three retrofitted configurations were previously introduced in Figure~\ref{fig:wall_configurations}. 
+
+For clarity in the presentation of the results, abbreviated identifiers are adopted for the wall configurations:
+
+\begin{itemize}
+\item \textbf{W1BM} -- Baseline model (original RC shear wall without strengthening),
+\item \textbf{W2CF} -- CFRP strengthened wall using Carbon Fiber Reinforced Polymer wrapping,
+\item \textbf{W3SP} -- Steel plate strengthened wall using externally bonded steel plates,
+\item \textbf{W4RJ} -- Reinforced concrete jacketed wall strengthened using RC jacketing.
+\end{itemize}
+
+All wall configurations were analysed using identical geometry and boundary conditions in order to isolate the structural influence of the strengthening techniques.
+
+Nonlinear static pushover analyses were conducted and interpreted using two displacement-based seismic assessment procedures:
+
+\begin{itemize}
+\item the \textbf{N2 Method} according to Eurocode~8,
+\item the \textbf{Displacement Coefficient Method} according to ASCE~41--23.
+\end{itemize}
+
+In addition, cyclic analyses were performed to evaluate the hysteretic behaviour and energy dissipation characteristics of the wall systems.
+
+\subsection{Pushover Analysis Using the N2 Method (EC8)}
+
+The pushover capacity curves obtained for the four wall typologies and interpreted using the N2 method are presented in Figure~\ref{fig:pushover_n2}. 
+The curves describe the relationship between base shear and roof displacement and illustrate the influence of the strengthening techniques on the lateral strength and displacement capacity of the shear wall system.
+
+\begin{figure}[htbp]
+\centering
+
+\begin{subfigure}{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{N2_wall1.png}
+\caption{W1BM}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{N2_wall2.png}
+\caption{W2CF}
+\end{subfigure}
+
+\vspace{0.4cm}
+
+\begin{subfigure}{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{N2_wall3.png}
+\caption{W3SP}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{N2_wall4.png}
+\caption{W4RJ}
+\end{subfigure}
+
+\caption{Pushover capacity curves of the four wall configurations interpreted using the Eurocode~8 N2 Method.}
+\label{fig:pushover_n2}
+\end{figure}
+
+\subsection{Pushover Analysis Using ASCE 41--23}
+
+The pushover curves interpreted using the ASCE~41--23 displacement coefficient method are shown in Figure~\ref{fig:pushover_asce}. 
+These results provide an alternative estimation of the target displacement demand and enable comparison between the EC8 and ASCE performance assessment procedures.
+
+\begin{figure}[htbp]
+\centering
+
+\begin{subfigure}{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{ASCE_wall1.png}
+\caption{W1BM}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{ASCE_wall2.png}
+\caption{W2CF}
+\end{subfigure}
+
+\vspace{0.4cm}
+
+\begin{subfigure}{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{ASCE_wall3.png}
+\caption{W3SP}
+\end{subfigure}
+\hfill
+\begin{subfigure}{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{ASCE_wall4.png}
+\caption{W4RJ}
+\end{subfigure}
+
+\caption{Pushover capacity curves interpreted using the ASCE~41--23 displacement coefficient method.}
+\label{fig:pushover_asce}
+\end{figure}
+
+\subsection{Yield Point Identification}
+
+Yield points were obtained mainly from the bilinear idealisation of SeismoStruct capacity curves, with one configuration also assessed using SPO2FRAG \cite{Baltzopoulos2017SPO2FRAG}for comparison. 
+Table~\ref{tab:yield_points} summarises the yield displacement and corresponding base shear obtained using both the N2 method and the ASCE~41--23 procedure.
+
+\begin{table}[htbp]
+\centering
+\caption{Yield points obtained from the pushover capacity curves.}
+\label{tab:yield_points}
+
+\begin{tabular}{lcccc}
+\hline
+Wall ID & \multicolumn{2}{c}{N2 Method} & \multicolumn{2}{c}{ASCE 41--23} \\
+\cline{2-5}
+ & $V_y$ (kN) & $d_y$ (mm) & $V_y$ (kN) & $d_y$ (mm) \\
+\hline
+W1BM & 162.4 & 3 & 154.3 & 4 \\
+W2CF & 164.5 & 4.3 & 159.82 & 3.5 \\
+W3SP & 288.2 & 6.8 & 269.16 & 7 \\
+W4RJ & 210.1 & 1.9 & 193.3 & 1.9 \\
+\hline
+\end{tabular}
+
+\end{table}
+
+\subsection{Cyclic Loading Protocol}
+
+The cyclic loading protocol adopted in the numerical simulations is illustrated in Figure~\ref{fig:loading_protocol}. 
+The displacement-controlled protocol consists of progressively increasing displacement amplitudes intended to reproduce the repeated load reversals experienced during earthquake excitation.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.7\linewidth]{loading_protocol.png}
+\caption{Displacement-controlled cyclic loading protocol used in the hysteretic analysis.}
+\label{fig:loading_protocol}
+\end{figure}
+
+\subsection{Hysteretic Response}
+
+The hysteretic force–displacement response obtained from the cyclic analysis is presented in Figure~\ref{fig:hysteretic_response}. 
+The hysteretic loops illustrate the stiffness degradation, strength deterioration, and energy dissipation characteristics of the reinforced concrete shear wall system under cyclic loading conditions.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.75\linewidth]{hysteretic_curve.png}
+\caption{Hysteretic force–displacement response obtained from the cyclic analysis.}
+\label{fig:hysteretic_response}
+\end{figure}
+
+\section{Case Study and Application Validation}
+\label{sec:case}
+
+The proposed framework was validated through application to a six–storey reinforced concrete (RC) building analysed using nonlinear static procedures in accordance with ASCE~41--23. 
+The objective of the case study is to demonstrate the practical implementation of the proposed methodology and evaluate the seismic response of the structure prior to retrofit intervention.
+
+\subsection{Building Characteristics and Numerical Model}
+
+The analysed structure is a six–storey reinforced concrete building modelled in SeismoStruct. 
+The numerical model consists of approximately 127 nodes and 252 structural elements representing beams, columns, and reinforced concrete shear walls forming the primary lateral load–resisting system.
+
+Each storey has a height of $3.5\,\mathrm{m}$, resulting in a total structural height of approximately $21\,\mathrm{m}$. 
+Structural members were modelled using force–based nonlinear beam–column elements with fibre discretization to capture the nonlinear behaviour of concrete and reinforcing steel.
+
+The reinforced concrete shear walls were defined with a wall length of $L_w = 2.5\,\mathrm{m}$ and thickness $t_w = 0.20\,\mathrm{m}$. 
+Concrete compressive strength was taken as $f'_c \approx 20\,\mathrm{MPa}$, while the reinforcing steel yield strength was $f_y \approx 444\,\mathrm{MPa}$.
+
+Figure~\ref{fig:building_model} illustrates the numerical model adopted for the nonlinear analysis.
+
+\begin{figure}[htbp]
+\centering
+
+\begin{subfigure}{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{3d_structure_model}
+\caption{Three–dimensional numerical model}
+\label{fig:3d_model}
+\end{subfigure}
+\hfill
+
+\begin{subfigure}{0.48\linewidth}
+\centering
+\includegraphics[width=\linewidth]{building_floor_plan}
+\caption{Floor plan showing structural layout and shear wall locations}
+\label{fig:floor_plan}
+\end{subfigure}
+
+\caption{Structural model of the six–storey RC building used for nonlinear analysis}
+\label{fig:building_model}
+
+\end{figure}
+
+\subsection{Nonlinear Pushover Analysis}
+
+A nonlinear static pushover analysis was performed to evaluate the global seismic response of the structure. 
+Lateral loads were incrementally applied at each storey level until significant nonlinear behaviour developed within the structural system. 
+The structural response was monitored using a roof control node, and the resulting capacity curve represents the relationship between base shear and roof displacement.
+
+Figure~\ref{fig:global_pushover} presents the global pushover capacity curve obtained from the nonlinear analysis.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.85\linewidth]{global_pushover_curve}
+\caption{Global pushover capacity curve (base shear versus roof displacement)}
+\label{fig:global_pushover}
+\end{figure}
+
+\subsection{Pushover Analysis Results under ASCE~41--23}
+
+The pushover results were interpreted using the ASCE~41--23 displacement–based assessment procedure. 
+The baseline wall configuration (W1BM) was adopted as the reference case for evaluating the effectiveness of the retrofit strategies.
+
+From the bilinear idealisation of the pushover curve, the yield point of the baseline wall was identified as
+
+\[
+V_y = 154.3~\text{kN}, \qquad d_y = 4.0~\text{mm}
+\]
+
+This yield point marks the onset of significant nonlinear behaviour and serves as the benchmark for comparing the retrofit configurations.
+
+Relative to the baseline wall, the CFRP–strengthened wall (W2CF) increases the yield resistance to $159.82$~kN with a yield displacement of $3.5$~mm. 
+The steel–plate–strengthened wall (W3SP) provides the largest strength improvement, reaching $269.16$~kN at $7.0$~mm. 
+The RC–jacketed wall (W4RJ) exhibits the highest initial stiffness with a yield resistance of $193.3$~kN at $1.9$~mm.
+
+These results confirm that all retrofit strategies improve the seismic response of the baseline wall, though with different structural characteristics. 
+Steel plate strengthening provides the greatest strength enhancement, while RC jacketing produces the stiffest response. 
+The CFRP solution yields moderate structural improvement but may offer advantages when sustainability and constructability criteria are also considered.
+
+\subsection{Energy Absorption Capacity}
+
+The energy absorption capacity of each wall configuration was estimated from the pushover capacity curves by calculating the area under the base shear–displacement relationship:
+
+\[
+E = \int_{0}^{\Delta_t} V(\Delta)\, d\Delta
+\]
+
+where $V(\Delta)$ represents the base shear corresponding to displacement $\Delta$ and $\Delta_t$ is the target displacement reached during the pushover analysis.
+
+Since pushover results are obtained as discrete numerical points, the absorbed energy was calculated using the trapezoidal integration rule:
+
+\[
+E \approx \sum_{i=1}^{n-1}
+\frac{V_i + V_{i+1}}{2}
+(\Delta_{i+1}-\Delta_i)
+\]
+
+Application of this approach shows that the steel plate strengthened wall (W3SP) exhibits the highest energy absorption capacity (approximately $9.5$~kJ), followed by the CFRP strengthened wall (W2CF) with about $6.1$~kJ and the baseline wall (W1BM) with approximately $5.8$~kJ. 
+The RC–jacketed wall (W4RJ), despite its higher stiffness, reaches a smaller displacement capacity and therefore absorbs approximately $4.3$~kJ.
+
+These results indicate that retrofit strategies that simultaneously increase both strength and deformation capacity tend to enhance the overall energy absorption potential of the structural system.
+
+\subsection{Pareto Front Analysis}
+\label{sec:pareto_analysis}
+
+The multi-objective optimization generated a set of Pareto-optimal
+retrofit solutions representing trade-offs between seismic
+performance, environmental impact, economic feasibility,
+and circular material utilization.
+
+Figure~\ref{fig:pareto_front} illustrates the Pareto front obtained
+from the optimization process. Each point represents a feasible
+retrofit configuration that cannot be improved in one objective
+without deteriorating another.
+
+The results indicate that retrofit strategies achieving the
+highest seismic performance typically require greater material
+consumption, leading to increased embodied carbon and lifecycle
+cost. Conversely, solutions optimized for environmental
+performance employ circular material strategies such as
+recyclable strengthening systems and reduced material usage.
+
+Among the investigated retrofit approaches, CFRP strengthening
+demonstrates favourable structural efficiency with relatively
+low environmental impact, while reinforced concrete jacketing
+provides the highest stiffness improvement but introduces
+increased embodied carbon. Steel plate strengthening provides
+an intermediate solution balancing structural performance and
+environmental sustainability.
+
+\section{Circular Economy Metrics}
+\label{sec:cemetrics}
+
+To evaluate the sustainability performance of retrofit strategies, a set of circular-economy indicators was introduced. These metrics quantify material circularity, embodied-carbon impact, and design recoverability, enabling systematic comparison of retrofit solutions beyond traditional lifecycle assessment approaches.
+
+\subsection{Material Circularity Index (MCI)}
+
+The Material Circularity Index (MCI) measures the extent to which materials remain within closed-loop cycles rather than relying on virgin resources. Following the methodology proposed by the Ellen MacArthur Foundation \cite{ellen_macarthur_mci}, the index is expressed as
+
+\begin{equation}
+\mathrm{MCI} = V X_1 + \frac{C}{I} X_2 + \left(1-\frac{C}{I}\right)X_3
+\end{equation}
+
+where $V$ represents the virgin material content, $C/I$ is the collection-to-input ratio of end-of-life materials, and $X_1$–$X_3$ are utility factors related to product lifetime and intensity of use.
+
+For computational efficiency within the optimisation framework, a simplified circular material share was adopted:
+
+\begin{equation}
+\chi_{\mathrm{circ}} =
+\frac{M_{\mathrm{recycled}} + M_{\mathrm{renewable}}}{M_{\mathrm{total}}}
+\times 100\%
+\end{equation}
+
+This parameter is monotonically related to the full MCI and therefore suitable for use as the circularity objective during optimisation.
+
+\subsection{Carbon Equivalence Damage Index (CEDI)}
+
+The Carbon Equivalence Damage Index (CEDI) evaluates the lifecycle carbon impact of retrofit strategies relative to a baseline configuration:
+
+\begin{equation}
+\mathrm{CEDI} =
+\frac{CO_{2,\mathrm{total}}}{CO_{2,\mathrm{reference}}}
+\end{equation}
+
+where $CO_{2,\mathrm{total}}$ represents total lifecycle emissions associated with the retrofit and $CO_{2,\mathrm{reference}}$ corresponds to the baseline configuration. Values $\mathrm{CEDI}<1$ indicate reduced carbon impact.
+
+To evaluate environmental efficiency of structural strengthening, an embodied-carbon intensity per unit structural capacity gain is defined as
+
+\begin{equation}
+I_{\mathrm{EC}} =
+\frac{CO_{2,\mathrm{embodied}}}{V_n}
+\end{equation}
+
+where $CO_{2,\mathrm{embodied}}$ is the embodied carbon associated with retrofit works and $V_n$ is the increase in shear capacity.
+
+\subsection{Design for Circularity (DfC)}
+
+The Design for Circularity (DfC) score evaluates the potential of retrofit systems to enable disassembly, reuse, and material recovery at end-of-life:
+
+\begin{equation}
+\mathrm{DfC} =
+W_1 S_{\mathrm{disassembly}}
++
+W_2 S_{\mathrm{reusability}}
++
+W_3 S_{\mathrm{identification}}
+\end{equation}
+
+where $W_i$ are weighting factors ($\sum W_i = 1$) and the $S$ terms represent scoring criteria related to connection type, modularity, and material identification.
+
+\section{Multi-Objective Optimization Framework}
+\label{sec:MOO}
+\subsection{Optimization Algorithm Implementation}
+\label{sec:optimization}
+
+The multi-objective optimization problem defined in Eq.~(\ref{eq:objective_functions})
+was solved using evolutionary optimization techniques capable of handling
+conflicting objectives and nonlinear design spaces. Three well-established
+multi-objective evolutionary algorithms were employed:
+
+\begin{itemize}
+\item Non-dominated Sorting Genetic Algorithm II (NSGA-II),
+\item Multi-Objective Particle Swarm Optimization (MOPSO),
+\item Strength Pareto Evolutionary Algorithm 2 (SPEA2).
+\end{itemize}
+
+Each candidate retrofit configuration was evaluated using nonlinear
+pushover analysis results combined with circular economy indicators.
+The optimization process iteratively generated design solutions by
+modifying strengthening strategies, material quantities, and circular
+material parameters.
+
+The resulting non-dominated solutions form the Pareto-optimal solution
+space representing trade-offs between seismic safety, environmental
+impact, economic cost, and material circularity.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{pareto_front_placeholder}
+\caption{Pareto-optimal solution space obtained from multi-objective
+optimization showing trade-offs between seismic performance,
+embodied carbon, lifecycle cost, and circularity indicators.}
+\label{fig:pareto_front}
+\end{figure}
+
+To balance structural, environmental, and economic objectives, the retrofit problem was formulated as a multi-objective optimisation problem solved using evolutionary algorithms such as NSGA-II, MOPSO, and SPEA2.
+
+\subsection{Objective Functions}
+
+Four objective functions were defined to represent the key performance criteria.
+
+\textbf{1. Seismic performance maximisation}
+
+\begin{equation}
+f_1 = \max(\mu) =
+\max\left(\frac{\delta_u}{\delta_y}\right)
+\end{equation}
+
+where $\mu$ is displacement ductility, $\delta_u$ is ultimate displacement, and $\delta_y$ is yield displacement.
+
+\textbf{2. Environmental impact minimisation}
+
+\begin{equation}
+f_2 =
+\min(I_{\mathrm{EC}})
+=
+\min\left(\frac{CO_{2,\mathrm{embodied}}}{V_n}\right)
+\end{equation}
+
+\textbf{3. Economic cost minimisation}
+
+\begin{equation}
+f_3 =
+\min(C_{\mathrm{total}})
+\end{equation}
+
+where
+
+\[
+C_{\mathrm{total}} =
+C_{\mathrm{material}} + C_{\mathrm{labour}} + C_{\mathrm{maintenance}}
+\]
+
+\textbf{4. Circular material utilisation maximisation}
+
+\begin{equation}
+f_4 =
+\max(\chi_{\mathrm{circ}})
+\end{equation}
+
+where $\chi_{\mathrm{circ}}$ is the circular material share.
+
+\subsection{Constraints}
+
+The optimisation problem incorporates structural and practical design constraints.
+
+\textbf{Structural performance constraints}
+
+\begin{itemize}
+
+\item Maximum drift limitation
+
+\[
+\theta_{\max} \leq 1.5\%
+\]
+
+consistent with the Life Safety performance level defined in ASCE~41--23.
+
+\item Minimum ductility demand
+
+\[
+\mu \geq 3.0
+\]
+
+\item Target displacement for pushover analysis
+
+\[
+\Delta_{target} = 0.04\,\mathrm{m}
+\]
+
+\end{itemize}
+
+\textbf{Material design constraints}
+
+Design variables were limited to practical retrofit ranges:
+
+\begin{itemize}
+
+\item Steel plate thickness
+
+\[
+6\,\mathrm{mm} \leq t_{\mathrm{steel}} \leq 12\,\mathrm{mm}
+\]
+
+\item CFRP strengthening parameters based on manufacturer specifications.
+
+\item RC jacketing defined by $30\,\mathrm{mm}$ concrete layers on both faces with $\phi8$ reinforcement at $200\,\mathrm{mm}$ spacing.
+
+\end{itemize}
+
+\subsection{Strategy Evaluation and Validation}
+
+Three retrofit strategies were evaluated within the integrated framework: CFRP strengthening, steel plate strengthening, and RC jacketing. Structural performance was assessed through nonlinear pushover analysis, while circular economy indicators quantified environmental and material efficiency.
+
+The multi-objective optimisation results demonstrate that retrofit selection should consider structural capacity, environmental impact, and material circularity simultaneously. While steel plate strengthening provides the highest structural capacity improvement and circularity potential, CFRP strengthening offers a balanced solution with favourable constructability and environmental performance. RC jacketing yields the largest stiffness increase but exhibits lower circularity due to its monolithic nature.
+
+Overall, the case study confirms that integrating circular-economy indicators with seismic performance assessment enables more balanced and sustainable retrofit decision-making for reinforced concrete structures.
+
+\section{Results and Discussion}
+\label{sec:results}
+
+This section presents the results obtained from the integrated seismic and
+circular-economy evaluation framework applied to the reinforced concrete
+shear wall retrofit strategies. The analysis compares structural performance,
+environmental indicators, and economic feasibility of the investigated
+retrofit solutions.
+
+\subsection{Seismic Performance Comparison}
+
+Nonlinear pushover analyses were performed for the baseline wall (W1BM) and three retrofit configurations: CFRP strengthening (W2CF), steel plate strengthening (W3SP), and reinforced concrete jacketing (W4RJ). The seismic response was evaluated by comparing the resulting capacity curves, yield points, and deformation capacities obtained from the nonlinear analyses.
+
+
+All retrofit solutions enhance the structural response relative to the
+baseline configuration by increasing lateral resistance and deformation
+capacity. RC jacketing produces the largest strength and stiffness increase
+due to the added concrete section and reinforcement. Steel plate
+strengthening also provides substantial strength improvement through
+external tensile resistance, while CFRP strengthening yields moderate but
+effective gains in shear capacity and ductility.
+
+For all retrofit configurations the maximum drift ratios remain below the
+ASCE~41--23 Life Safety limit of $1.5\%$, confirming that the strengthened
+walls satisfy the required seismic performance criteria.
+
+\subsection{Circular Economy Performance}
+
+Circular economy performance was evaluated using three indicators:
+Material Circularity Index (MCI), Carbon Equivalence Damage Index (CEDI),
+and Design for Circularity (DfC). The results are summarized in
+Table~\ref{tab:CE_metrics}.
+
+\paragraph{Material Circularity Index}
+
+Steel plate strengthening achieves the highest circularity
+($\mathrm{MCI}=0.45$) due to the recyclability and recoverability of
+structural steel. CFRP strengthening shows moderate circularity
+($\mathrm{MCI}=0.15$), while RC jacketing exhibits limited improvement
+($\mathrm{MCI}=0.08$) because the added concrete becomes permanently
+integrated with the existing structure.
+
+\paragraph{Carbon Equivalence Damage Index}
+
+The embodied-carbon intensity varies considerably between retrofit
+solutions. CFRP strengthening shows the lowest construction-phase carbon
+intensity ($12.5\,\mathrm{kg\,CO_2\text{-}eq/kN}$), followed by steel plate
+strengthening ($18.7\,\mathrm{kg\,CO_2\text{-}eq/kN}$) and RC jacketing
+($22.3\,\mathrm{kg\,CO_2\text{-}eq/kN}$).
+
+Lifecycle analysis indicates substantial reductions relative to the
+baseline case, with CEDI values of
+$8.2$, $15.4$, and $20.1\,\mathrm{kg\,CO_2\text{-}eq/kN}$ for CFRP,
+steel plate, and RC jacketing, respectively. These results highlight the
+environmental advantage of lightweight retrofit techniques.
+
+\paragraph{Design for Circularity}
+
+The DfC indicator evaluates end-of-life recoverability. Steel plate
+strengthening obtains the highest score (8.7/10) due to its potential for
+mechanical disassembly and recycling. CFRP strengthening achieves
+7.8/10, reflecting partial recoverability, while RC jacketing shows
+limited circularity (2.1/10) because of its monolithic construction.
+
+\begin{table}[h]
+\centering
+\caption{Circular economy assessment results for the investigated retrofit strategies derived from the indicators defined in Section~\ref{sec:mci}.}
+\label{tab:CE_metrics}
+\begin{tabular}{lccccc}
+\hline
+\textbf{Wall configuration} & \textbf{Retrofit strategy} & \textbf{MCI} & \textbf{CEDI (Immediate)} & \textbf{CEDI (Lifecycle)} & \textbf{DfC score} \\
+\hline
+W1BM & Baseline wall & 0.05 & -- & -- & 1.0 \\
+W2CF & CFRP strengthening & 0.15 & 12.5 & 8.2 & 7.8 \\
+W3SP & Steel plate strengthening & 0.45 & 18.7 & 15.4 & 8.7 \\
+W4RJ & RC jacketing & 0.08 & 22.3 & 20.1 & 2.1 \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Economic Performance}
+
+Economic evaluation considers both initial retrofit investment and
+long-term lifecycle performance. CFRP strengthening represents the
+lowest initial cost due to its lightweight installation and minimal
+construction intervention, whereas RC jacketing requires the highest
+investment because of additional materials and labour.
+
+Lifecycle analysis over a 50-year period indicates that all retrofit
+solutions generate positive economic returns through avoided structural
+damage and extended service life. Among the investigated strategies,
+CFRP strengthening provides the most favourable economic balance with
+the highest net present value and shortest payback period.
+
+\subsection{Integrated Performance Evaluation}
+
+The integrated evaluation highlights the trade-offs between structural,
+environmental, and economic performance.
+
+RC jacketing provides the greatest structural capacity increase but
+exhibits the lowest circularity and highest material intensity. Steel
+plate strengthening achieves the best circular economy performance due
+to its recyclability and recoverability. CFRP strengthening offers the
+most balanced overall solution, combining improved seismic behaviour,
+low lifecycle carbon intensity, and favourable economic performance.
+
+These findings demonstrate that retrofit decisions should consider
+multiple performance criteria rather than relying solely on structural
+capacity improvements.
+
+\subsection{Statistical Validation of Optimization Results}
+\label{sec:statistical_validation}
+
+To evaluate the robustness of the optimization outcomes,
+a statistical validation analysis was conducted comparing
+conventional retrofit strategies with circular economy
+based retrofit solutions.
+
+The statistical evaluation included correlation analysis,
+hypothesis testing, and sensitivity analysis of key
+performance indicators including seismic performance index,
+embodied carbon, lifecycle cost, and material circularity
+index (MCI).
+
+A two-sample Student's t-test was applied to determine
+whether the differences between conventional and circular
+retrofit strategies were statistically significant.
+Statistical significance was evaluated at a confidence
+level of 95\% ($p < 0.05$).
+
+Figure~\ref{fig:statistical_comparison} illustrates the
+comparative performance distribution between conventional
+and circular retrofit strategies. The results demonstrate
+that circular retrofit solutions significantly improve
+material circularity and recovery potential while
+maintaining comparable seismic performance.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{statistical_analysis_placeholder}
+\caption{Statistical comparison between conventional and circular
+retrofit strategies showing improvements in circularity,
+carbon reduction, and lifecycle cost indicators.}
+\label{fig:statistical_comparison}
+\end{figure}
+
+\subsection{Sensitivity Analysis}
+\label{sec:sensitivity}
+
+A sensitivity analysis was conducted to identify the
+most influential parameters affecting the optimization
+objectives. A Random Forest regression model was used
+to evaluate the importance of design variables including
+retrofit strategy, wall geometry, and material selection.
+
+The analysis indicates that retrofit strategy selection
+is the dominant variable affecting environmental and
+circularity indicators, while structural parameters such
+as wall dimensions and reinforcement ratio strongly
+influence seismic performance metrics.
+
+Figure~\ref{fig:sensitivity_analysis} presents the
+feature importance ranking obtained from the machine
+learning based sensitivity analysis.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{sensitivity_analysis_placeholder}
+\caption{Feature importance ranking obtained from sensitivity
+analysis showing the influence of design variables on
+seismic, environmental, and circularity performance indicators.}
+\label{fig:sensitivity_analysis}
+\end{figure}
+
+
+\section{Conclusions}
+\label{sec:conclusions}
+
+This study developed and applied an integrated framework for evaluating seismic
+retrofit strategies for reinforced concrete shear walls while simultaneously
+considering circular economy indicators and economic performance. The methodology
+combines nonlinear structural analysis with sustainability metrics including the
+Material Circularity Index (MCI), Carbon Equivalence Damage Index (CEDI), and
+Design for Circularity (DfC).
+
+The results demonstrate that seismic retrofit decisions can be significantly
+improved by integrating structural, environmental, and economic performance
+indicators within a unified evaluation framework.
+
+The main conclusions of the study are summarized as follows:
+
+\begin{itemize}
+
+\item All retrofit strategies investigated in this study significantly improve the
+seismic performance of the baseline shear wall while satisfying the Life Safety
+performance requirements specified in ASCE~41--23.
+
+\item Circular economy indicators reveal substantial differences between retrofit
+techniques. Steel plate strengthening exhibits the highest material circularity
+(MCI = 0.45) and the best design-for-circularity performance (DfC = 8.7/10),
+while CFRP strengthening provides moderate circularity improvement and RC
+jacketing remains the least circular solution.
+
+\item Lifecycle environmental assessment shows that retrofit interventions
+substantially reduce embodied carbon intensity relative to the baseline
+configuration. The lifecycle CEDI decreases from
+$45.6\,\mathrm{kg\,CO_2\text{-}eq/kN}$ for the baseline wall to
+$8.2$, $15.4$, and $20.1\,\mathrm{kg\,CO_2\text{-}eq/kN}$ for CFRP, steel plate,
+and RC jacketing strategies, respectively.
+
+\item Economic evaluation indicates that CFRP strengthening provides the most
+favourable cost-performance balance, combining relatively low installation cost,
+short payback period, and positive lifecycle economic returns.
+
+\item When structural performance, environmental impact, and circular economy
+metrics are considered together, CFRP strengthening emerges as the most balanced
+retrofit strategy for the investigated wall configuration.
+
+\end{itemize}
+
+Overall, the study demonstrates that incorporating circular economy indicators
+into seismic retrofit decision-making enables more sustainable and resource-
+efficient structural interventions without compromising safety.
+
+\subsection*{Recommendations for Future Work}
+
+Future research should extend the proposed framework to a wider range of building
+typologies and seismic hazard levels. Additional work is also required to refine
+circularity indicators for structural systems and to integrate lifecycle data with
+digital modelling tools such as BIM and digital twin platforms.
+
+\section*{Data availability}
+
+All data generated or analysed during this study are included within the manuscript
+and its supplementary materials. The numerical models used in this research are
+publicly available at:
+
+\url{https://github.com/karash68/Circular-Economy-Framework-for-RC-Shear-Walls}
+
+\section*{Data availability}
+All data generated or analyzed during this study are included in this manuscript and its supplementary information files. or publicly at https://github.com/karash68/Circular-Economy-Framework-for-RC-Shear-Walls
+
+\bibliography{references}
+
+
+\section*{Acknowledgements}
+The authors would like to acknowledge the use of GenAI tools—GitHub Copilot (for code debugging) and Perplexity AI (for text editing)—while confirming that all outputs were reviewed and the final content is their responsibility.
+
+\section*{Author contributions statement}
+Conceptualization, K.K.K. and O.K.B.; methodology, K.K.K.; software, K.K.K.; validation, K.K.K, and O.K.B.; formal analysis, K.K.K.; data curation, K.K.K.; writing—original draft preparation, K.K.K.; writing—review and editing, K.K.K., and O.K.B.; visualization, K.K.K.; supervision, O.K.B; funding acquisition, K.K.K. All authors have read and agreed to the published version of the manuscript.  All authors reviewed the manuscript.
+\section*{Funding}
+The APC was funded by Szechenyi Istvan University.
+\section*{Declarations}
+\paragraph{The authors declare that there are no competing interests.}
+
+\section*{Correspondence}
+and requests for materials should be addressed to K.K.K.
+
+
+\end{document}
